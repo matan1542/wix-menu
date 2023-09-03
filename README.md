@@ -7,7 +7,7 @@
   	* Delete element - id: string
   	* Get Children(parentId: string) => {{id, title}...
     Response:
-    ```
+    
     {  "imbOV0": {
     "url": "man",
     "title": "Man"
@@ -16,7 +16,7 @@
     "url": "children",
     "title": "Children"
     }}
-    ```
+    
   ### Utils:
     * save to file
     * update file
