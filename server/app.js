@@ -7,7 +7,8 @@ dotenv.config();
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json()); // Middleware for parsing JSON data
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/menu-items", menuItems);
 

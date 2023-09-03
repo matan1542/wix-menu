@@ -1,6 +1,7 @@
 import fs from "fs";
+import { makeId } from "../service/util.service.js";
 
-export { getItems, getRootItems, deleteItem };
+export { getItems, getRootItems, deleteItem, addItem };
 
 const getItems = (req, res, next) => {
   const { id } = req.params;
@@ -41,19 +42,60 @@ const getRootItems = (req, res, next) => {
 };
 
 const deleteItem = (req, res, next) => {
-  const { id, parentId } = req.params;
+  const { id, parentId } = req.query;
   fs.readFile("data/menu-items.json", "utf8", (err, data) => {
-    if (err) throw new Error(err);
-    const menuItems = JSON.parse(data);
-    if (menuItems[id]) delete menuItems[id];
-    for (const item in menuItems[parentId]) {
-      if (menuItems[parentId][id]) {
-        delete menuItems[parentId][id];
-      }
+    if (err) {
+      return res.status(500).json({ error: "Error reading file." });
     }
+
+    const menuItems = JSON.parse(data);
+
+    if (menuItems[id]) {
+      delete menuItems[id];
+    }
+
+    if (parentId && menuItems[parentId] && menuItems[parentId].children[id]) {
+      delete menuItems[parentId].children[id];
+    }
+
     fs.writeFile("data/menu-items.json", JSON.stringify(menuItems), (err) => {
-      if (err) throw new Error(err);
-      res.send({ message: "Item deleted" });
+      if (err) {
+        return res.status(500).json({ error: "Error writing file." });
+      }
+      res.status(200).send({ message: "Item deleted" });
+    });
+  });
+};
+
+const addItem = (req, res, next) => {
+  const { parentId, title, url } = req.body;
+  fs.readFile("data/menu-items.json", "utf8", (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: "Error reading file." });
+    }
+
+    const menuItems = JSON.parse(data);
+
+    const newItemId = makeId(); // You can implement a function to generate unique IDs
+    let newItem = null;
+
+    if (parentId) {
+      if (!menuItems[parentId].children) {
+        menuItems[parentId].children = {};
+      }
+      menuItems[parentId].children[newItemId] = true;
+      newItem = {
+        title: title,
+        url: url,
+      };
+      menuItems[newItemId] = newItem;
+    }
+
+    fs.writeFile("data/menu-items.json", JSON.stringify(menuItems), (err) => {
+      if (err) {
+        return res.status(500).json({ error: "Error writing file." });
+      }
+      res.status(201).json({ message: "Item added", item: newItem });
     });
   });
 };
