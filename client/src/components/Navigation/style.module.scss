@@ -1,2 +1,12 @@
 .navigationContainer {
+  position: relative;
+  transform: translatY(-100%);
+}
+
+.menuItemsContainer {
+  display: flex;
+  flex-direction: column;
+  > * {
+    padding: 5px;
+  }
 }

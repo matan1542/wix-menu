@@ -1,9 +1,14 @@
+import MenuItem from "./MenuItem";
 
-const MenuItems = ()=>{
+import style from "../style.module.scss";
+
+const MenuItems = ({items})=>{
 
     return(
-        <div>
-
+        <div className={style.menuItemsContainer}>
+            {items.map((item, index) => (
+                <MenuItem key={item.id} item={item} />
+            ))}
         </div>
     )
 }

@@ -1,13 +1,13 @@
 import MenuItems from './MenuItems'
-import style from './style.module.css'
+import style from './style.module.scss'
 
-const Navigation = ()=>{
+const Navigation = ({items})=>{
     
     return (
-        <div className={style.navigationContainer}>
-            <MenuItems/>
-        </div>
-    )
+      <div className={style.navigationContainer}>
+            <MenuItems items={items} />
+      </div>
+    );
 }
 
 export default Navigation
