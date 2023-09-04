@@ -6,7 +6,7 @@ import style from "./style.module.scss";
 import appContext from "../../store/store";
 
 const NavHeader = () => {
-  const { onClickRootHandler,navItems } = useContext(appContext);
+  const { onClickRootHandler, navItems } = useContext(appContext);
 
   return (
     <nav className={style.navHeaderContainer}>
