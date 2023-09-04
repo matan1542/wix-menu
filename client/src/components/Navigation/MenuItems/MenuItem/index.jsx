@@ -4,8 +4,17 @@ import { useContext } from "react";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import appContext from "../../../../store/store";
 
-const MenuItem = ({itemId, item: { title }, levelIdx }) => {
-  const { onClickItems } = useContext(appContext);
+const MenuItem = ({ itemId, item: { title }, levelIdx }) => {
+  const { onClickItems, setClicked, setPoints } = useContext(appContext);
+
+  const onContextMenuHandler = (e) => {
+    e.preventDefault();
+    setClicked(true);
+    setPoints({
+      x: e.pageX,
+      y: e.pageY,
+    });
+  };
 
   return (
     <div
@@ -13,6 +22,7 @@ const MenuItem = ({itemId, item: { title }, levelIdx }) => {
       onClick={() => {
         onClickItems(itemId);
       }}
+      onContextMenu={onContextMenuHandler}
     >
       <span>{title}</span>
     </div>

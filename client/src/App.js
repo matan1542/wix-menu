@@ -3,8 +3,11 @@ import appContext from "./store/store";
 import NavHeader from "./components/NavHeader";
 import { useState } from "react";
 import { readMenuItems, readRootItems } from "./services/menu-items.service";
+import useContextMenu from "./Hooks/useContextMenu";
+import ContextMenu from "./components/ContextMenu";
 
 function App() {
+  const { clicked, setClicked, points, setPoints } = useContextMenu();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [navItems, setNavItems] = useState(null);
 
@@ -24,12 +27,24 @@ function App() {
     navItems,
     onClickRootHandler,
     onClickItems,
+    setClicked,
+    setPoints,
   };
   return (
     <div className={style.appContainer}>
       <appContext.Provider value={contextValue}>
         <NavHeader navItems={[]} />
       </appContext.Provider>
+
+      {clicked && (
+        <ContextMenu top={points.y} left={points.x}>
+          <ul>
+            <li>Edit</li>
+            <li>Copy</li>
+            <li>Delete</li>
+          </ul>
+        </ContextMenu>
+      )}
     </div>
   );
 }
