@@ -7,6 +7,7 @@ import {
   addMenuItem,
   deleteMenuItem,
   readMenuItems,
+  updateMenuItem,
 } from "./services/menu-items.service";
 import useContextMenu from "./Hooks/useContextMenu";
 import ContextMenu from "./components/ContextMenu";
@@ -39,20 +40,28 @@ function App() {
     setNavItems([...newNavItems, subMenuItems]);
   };
 
-  const onClickAdd = async (level, id) => {
+  const onClickAdd = async () => {
+    const { level, id } = contextItem;
     const newNavItems = [...navItems];
-    let title = prompt("Enter title");
-    let url = prompt("Enter url");
-    console.log(level, id);
+    const title = prompt("Enter title");
+    const url = prompt("Enter url");
     const newMenuItem = await addMenuItem({ parentId: id, title, url });
-    console.log(newMenuItem);
     newNavItems[level].childrens[newMenuItem.id] = true;
-    // setNavItems([newNavItems]);
+    setNavItems(newNavItems);
+  };
+
+  const onClickUpdate = async () => {
+    const { level, id } = contextItem;
+    const title = prompt("Enter title");
+    const newNavItems = [...navItems];
+    const updatedMenuItem = { ...newNavItems[level].childrens[id], title };
+    newNavItems[level].childrens[id] = updatedMenuItem;
+    setNavItems(newNavItems);
+    updateMenuItem({ id, title });
   };
 
   const deleteItem = async ({ id, level }) => {
     const navItemsCopy = [...navItems];
-    console.log("navItemsCopy", navItemsCopy);
     delete navItemsCopy[level].childrens[id];
     if (Object.keys(navItemsCopy[level].childrens).length === 0) {
       navItemsCopy.splice(level, 1);
@@ -88,7 +97,7 @@ function App() {
         <ContextMenu top={points.y} left={points.x}>
           <ul>
             <li onClick={onClickAdd}>Add</li>
-            <li>Edit</li>
+            <li onClick={onClickUpdate}>Edit</li>
             <li onClick={handleItemDeletion}>Delete</li>
           </ul>
         </ContextMenu>
