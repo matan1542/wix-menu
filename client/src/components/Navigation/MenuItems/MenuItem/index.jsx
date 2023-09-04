@@ -1,35 +1,20 @@
 import style from "./style.module.scss";
+import { useContext } from "react";
+
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import { useState } from "react";
-import ContextMenu from "./ContextMenu";
+import appContext from "../../../../store/store";
 
-const MenuItem = ({ item, onclick }) => {
-  const [showMenu, setShowMenu] = useState(false);
-  const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
-
-  const handleContextMenu = (event) => {
-    event.preventDefault();
-    setShowMenu(true);
-    setMenuPosition({ x: event.clientX, y: event.clientY });
-  };
-
-  const handleCloseMenu = () => {
-    setShowMenu(false);
-  };
+const MenuItem = ({ itemId, item: { title }, levelIdx }) => {
+  const { onClickItems } = useContext(appContext);
 
   return (
     <div
       className={style.menuItemContainer}
-      onClick={() => onclick(item?.id)}
-      onContextMenu={handleContextMenu}
+      onClick={() => {
+        onClickItems(itemId);
+      }}
     >
-      <span>{item.title}</span>
-      {item.items ? (
-        <span>
-          <ArrowDownwardIcon />{" "}
-          {showMenu && <ContextMenu onContextMenu={handleCloseMenu} />}
-        </span>
-      ) : null}
+      <span>{title}</span>
     </div>
   );
 };
