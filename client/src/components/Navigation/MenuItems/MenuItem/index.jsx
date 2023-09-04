@@ -5,7 +5,8 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import appContext from "../../../../store/store";
 
 const MenuItem = ({ itemId, item: { title }, levelIdx }) => {
-  const { onClickItems, setClicked, setPoints } = useContext(appContext);
+  const { onClickItems, setClicked, setPoints, setContextItem } =
+    useContext(appContext);
 
   const onContextMenuHandler = (e) => {
     e.preventDefault();
@@ -14,6 +15,7 @@ const MenuItem = ({ itemId, item: { title }, levelIdx }) => {
       x: e.pageX,
       y: e.pageY,
     });
+    setContextItem({ id: itemId, level: levelIdx });
   };
 
   return (
