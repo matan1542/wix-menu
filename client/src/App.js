@@ -8,17 +8,29 @@ import ContextMenu from "./components/ContextMenu";
 
 function App() {
   const { clicked, setClicked, points, setPoints } = useContextMenu();
+  const [openedMapParents, setOpenedMapParents] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [navItems, setNavItems] = useState(null);
 
-  const onClickRootHandler = async () => {
+  const maintainMaps = ({ level, id }) => {
+    // let openedMap = openedMapParents[level];
+    // openedMap = { [id]: true };
+    // let newMap = openedMapParents.slice(0, level + 1);
+    let newNavItems = navItems.slice(0, level + 1);
+    // setOpenedMapParents(newMap);
+    setNavItems(newNavItems);
+    return { newNavItems };
+  };
+
+  const onClickRootHandler = async (level) => {
     const root = await readRootItems();
     setNavItems([root]);
   };
 
-  const onClickItems = async (id) => {
+  const onClickItems = async (id, level) => {
+    let { newNavItems } = maintainMaps({ level, id });
     const subMenuItems = await readMenuItems(id);
-    setNavItems((prevItems) => [...prevItems, subMenuItems]);
+    setNavItems([...newNavItems, subMenuItems]);
   };
 
   const contextValue = {
@@ -29,18 +41,20 @@ function App() {
     onClickItems,
     setClicked,
     setPoints,
+    openedMapParents,
   };
+
   return (
     <div className={style.appContainer}>
       <appContext.Provider value={contextValue}>
-        <NavHeader navItems={[]} />
+        <NavHeader />
       </appContext.Provider>
 
       {clicked && (
         <ContextMenu top={points.y} left={points.x}>
           <ul>
+            <li>Add</li>
             <li>Edit</li>
-            <li>Copy</li>
             <li>Delete</li>
           </ul>
         </ContextMenu>

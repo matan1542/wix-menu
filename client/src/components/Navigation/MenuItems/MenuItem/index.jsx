@@ -20,7 +20,7 @@ const MenuItem = ({ itemId, item: { title }, levelIdx }) => {
     <div
       className={style.menuItemContainer}
       onClick={() => {
-        onClickItems(itemId);
+        onClickItems(itemId, levelIdx);
       }}
       onContextMenu={onContextMenuHandler}
     >
