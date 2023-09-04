@@ -1,16 +1,20 @@
-import style from './style.module.scss'
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import style from "./style.module.scss";
+import { useContext } from "react";
 
-const MenuItem = ({ item }) => {
-    
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import appContext from "../../../../store/store";
+
+const MenuItem = ({itemId, item: { title }, levelIdx }) => {
+  const { onClickItems } = useContext(appContext);
+
   return (
-      <div className={style.menuItemContainer}>
-        <span>{item.title}</span>
-      {item.items ? (
-        <span>
-          <ArrowDownwardIcon />{" "}
-        </span>
-          ) : null}
+    <div
+      className={style.menuItemContainer}
+      onClick={() => {
+        onClickItems(itemId);
+      }}
+    >
+      <span>{title}</span>
     </div>
   );
 };
