@@ -6,7 +6,7 @@ import appContext from "../../store/store";
 
 const Menu = ({ children }) => {
   const { setIsMenuOpen } = useContext(appContext);
-  
+
   const toggle = () => setIsMenuOpen((prev) => !prev);
   return (
     <div className={style.menuContainer}>
@@ -23,7 +23,7 @@ const Menu = ({ children }) => {
           </span>
         )}
       </button>
-      {children}
+      <div className={style.navWrapper}>{children}</div>
     </div>
   );
 };

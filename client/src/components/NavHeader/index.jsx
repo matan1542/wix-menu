@@ -3,7 +3,7 @@ import Navigation from "../Navigation";
 
 import style from "./style.module.scss";
 
-const NavHeader = ({navItems}) => {
+const NavHeader = ({ navItems }) => {
   return (
     <nav className={style.navHeaderContainer}>
       <Menu>
@@ -13,5 +13,4 @@ const NavHeader = ({navItems}) => {
   );
 };
 
-
-export default NavHeader
+export default NavHeader;

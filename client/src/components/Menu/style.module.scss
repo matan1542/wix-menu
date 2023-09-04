@@ -1,4 +1,15 @@
+.menuContainer {
+  position: relative;
+}
 
-.menuContainer{
+.navWrapper {
+  > *:first-child {
     position: relative;
+    transform: translateY(-100%);
+  }
+
+  > *:not(:first-child) {
+    position: relative;
+    transform: translateX(100%);
+  }
 }
