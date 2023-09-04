@@ -2,13 +2,18 @@ import style from "./styles/style.module.scss";
 import appContext from "./store/store";
 import NavHeader from "./components/NavHeader";
 import { useState } from "react";
-import { readMenuItems, readRootItems } from "./services/menu-items.service";
+import {
+  deleteMenuItem,
+  readMenuItems,
+  readRootItems,
+} from "./services/menu-items.service";
 import useContextMenu from "./Hooks/useContextMenu";
 import ContextMenu from "./components/ContextMenu";
 
 function App() {
   const { clicked, setClicked, points, setPoints } = useContextMenu();
   const [openedMapParents, setOpenedMapParents] = useState([]);
+  const [contextItem, setContextItem] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [navItems, setNavItems] = useState(null);
 
@@ -33,6 +38,22 @@ function App() {
     setNavItems([...newNavItems, subMenuItems]);
   };
 
+  const deleteItem = async ({ id, level }) => {
+    const navItemsCopy = [...navItems];
+    console.log("navItemsCopy", navItemsCopy);
+    delete navItemsCopy[level].childrens[id];
+    if (Object.keys(navItemsCopy[level].childrens).length === 0) {
+      navItemsCopy.splice(level, 1);
+    }
+    setNavItems(navItemsCopy);
+  };
+
+  const handleItemDeletion = async () => {
+    const { level, id } = contextItem;
+    deleteItem({ id, level });
+    deleteMenuItem({ id, parentId: navItems[level].parentId });
+  };
+
   const contextValue = {
     isMenuOpen,
     setIsMenuOpen,
@@ -41,6 +62,7 @@ function App() {
     onClickItems,
     setClicked,
     setPoints,
+    setContextItem,
     openedMapParents,
   };
 
@@ -55,7 +77,7 @@ function App() {
           <ul>
             <li>Add</li>
             <li>Edit</li>
-            <li>Delete</li>
+            <li onClick={handleItemDeletion}>Delete</li>
           </ul>
         </ContextMenu>
       )}
