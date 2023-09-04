@@ -1,32 +1,15 @@
-import _ from 'lodash';
+import axios from "axios";
 
-export const menuItemsService = {
-  updateTarget,
+export { readRootItems, readMenuItems };
+
+const API_URL = process.env.REACT_APP_API_URL;
+
+const readRootItems = async () => {
+  const root = await axios.get(`${API_URL}menu-items`);
+  return root.data
 };
 
-async function updateTarget(menu, id, updateData) {
-  try {
-    const target = await getTarget(menu, id);
-    Object.assign(target, updateData);
-    return menu;
-  } catch (err) {
-    throw new Error(err);
-  }
-}
-
-async function getTarget(targetMenu, id) {
-  const res = await findTarget(targetMenu);
-  return res;
-  function findTarget(targetMenu) {
-    try {
-      if (targetMenu?.id === id) {
-        return targetMenu;
-      }
-      return (targetMenu?.items || [])
-        .map((item) => findTarget(item))
-        .filter((res) => _.isObject(res))[0];
-    } catch (err) {
-      throw new Error(err);
-    }
-  }
-}
+const readMenuItems = async (id) => {
+  const subMenuItems = await axios.get(`${API_URL}menu-items/${id}`);
+  return subMenuItems.data
+};

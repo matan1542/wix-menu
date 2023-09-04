@@ -1,4 +1,12 @@
+.menuContainer {
+  position: relative;
+}
 
-.menuContainer{
-    position: relative;
+.navigationWrapper {
+  display: flex;
+  margin-top: 5px;
+  gap: 5px;
+  >*{
+    border: 1px solid #000;
+  }
 }
