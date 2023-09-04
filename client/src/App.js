@@ -2,7 +2,11 @@ import style from "./styles/style.module.scss";
 import appContext from "./store/store";
 import NavHeader from "./components/NavHeader";
 import { useState } from "react";
-import { readMenuItems, readRootItems } from "./services/menu-items.service";
+import {
+  readMenuItems,
+  readRootItems,
+  addMenuItem,
+} from "./services/menu-items.service";
 import useContextMenu from "./Hooks/useContextMenu";
 import ContextMenu from "./components/ContextMenu";
 
@@ -33,6 +37,17 @@ function App() {
     setNavItems([...newNavItems, subMenuItems]);
   };
 
+  const onClickAdd = async (level, id) => {
+    const newNavItems = [...navItems];
+    let title = prompt("Enter title");
+    let url = prompt("Enter url");
+    console.log(level, id);
+    const newMenuItem = await addMenuItem({ parentId: id, title, url });
+    console.log(newMenuItem);
+    newNavItems[level].childrens[newMenuItem.id] = true;
+    // setNavItems([newNavItems]);
+  };
+
   const contextValue = {
     isMenuOpen,
     setIsMenuOpen,
@@ -53,7 +68,7 @@ function App() {
       {clicked && (
         <ContextMenu top={points.y} left={points.x}>
           <ul>
-            <li>Add</li>
+            <li onClick={onClickAdd}>Add</li>
             <li>Edit</li>
             <li>Delete</li>
           </ul>
