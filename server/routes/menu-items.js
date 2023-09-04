@@ -1,5 +1,4 @@
 import express from "express";
-import fs from "fs";
 import {
   addItem,
   deleteItem,
@@ -19,4 +18,5 @@ router.get("/", getRootItems);
 router.put("/", updateItem);
 
 router.delete("/", deleteItem);
+
 export default router;

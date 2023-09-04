@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import cors from 'cors';
 import dotenv from "dotenv";
 import menuItems from "./routes/menu-items.js";
 dotenv.config();
@@ -9,6 +10,8 @@ const port = 3000;
 
 app.use(express.json()); // Middleware for parsing JSON data
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cors());
 
 app.use("/menu-items", menuItems);
 

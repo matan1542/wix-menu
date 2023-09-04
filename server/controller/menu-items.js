@@ -1,7 +1,14 @@
 import fs from "fs";
 import { makeId } from "../service/util.service.js";
 
-export { getItems, getRootItems, deleteItem, addItem, updateItem };
+export {
+  getItems,
+  getRootItems,
+  deleteItem,
+  addItem,
+  updateItem,
+  checkForRoot,
+};
 
 const getItems = (req, res, next) => {
   const { id } = req.params;
@@ -122,5 +129,17 @@ const updateItem = (req, res, next) => {
       }
       res.status(200).json({ message: "Item updated", item: updateItem });
     });
+  });
+};
+
+const checkForRoot = (req, res, next) => {
+  fs.readFile("data/menu-items.json", "utf8", (err, data) => {
+    if (err) throw new Error(err);
+    const menuItems = JSON.parse(data);
+    if (Object.keys(menuItems).length > 0) {
+      res.status(200).json({ message: "items exist" });
+    } else {
+      res.status(404).json({ message: "no items exist" });
+    }
   });
 };
