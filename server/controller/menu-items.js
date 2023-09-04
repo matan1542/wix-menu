@@ -1,7 +1,7 @@
 import fs from "fs";
 import { makeId } from "../service/util.service.js";
 
-export { getItems, getRootItems, deleteItem, addItem };
+export { getItems, getRootItems, deleteItem, addItem, updateItem };
 
 const getItems = (req, res, next) => {
   const { id } = req.params;
@@ -96,6 +96,31 @@ const addItem = (req, res, next) => {
         return res.status(500).json({ error: "Error writing file." });
       }
       res.status(201).json({ message: "Item added", item: newItem });
+    });
+  });
+};
+
+const updateItem = (req, res, next) => {
+  const { id, ...item } = req.body;
+  fs.readFile("data/menu-items.json", "utf8", (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: "Error reading file." });
+    }
+
+    const menuItems = JSON.parse(data);
+    let updateItem = null;
+    if (menuItems[id]) {
+      menuItems[id] = {
+        ...menuItems[id],
+        ...item,
+      };
+    }
+
+    fs.writeFile("data/menu-items.json", JSON.stringify(menuItems), (err) => {
+      if (err) {
+        return res.status(500).json({ error: "Error writing file." });
+      }
+      res.status(200).json({ message: "Item updated", item: updateItem });
     });
   });
 };

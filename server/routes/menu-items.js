@@ -5,6 +5,7 @@ import {
   deleteItem,
   getItems,
   getRootItems,
+  updateItem,
 } from "../controller/menu-items.js";
 
 const router = express.Router();
@@ -15,12 +16,7 @@ router.get("/:id", getItems);
 
 router.get("/", getRootItems);
 
-router.put("/", (req, res, next) => {
-  fs.readFile("data/menu-items.json", "utf8", (err, data) => {
-    const menuItems = JSON.parse(data);
-  });
-  res.send({ message: "Menu items" });
-});
+router.put("/", updateItem);
 
 router.delete("/", deleteItem);
 export default router;
