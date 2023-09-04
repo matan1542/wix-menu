@@ -14,7 +14,13 @@ const NavHeader = () => {
         {navItems && (
           <>
             {navItems.map((levelItems, idx) => {
-              return <Navigation levelItems={levelItems} levelIdx={idx} />;
+              return (
+                <Navigation
+                  key={levelItems.parentId}
+                  levelItems={levelItems}
+                  levelIdx={idx}
+                />
+              );
             })}
           </>
         )}

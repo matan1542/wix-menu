@@ -1,6 +1,12 @@
 import axios from "axios";
 
-export { readRootItems, readMenuItems, deleteMenuItem };
+export {
+  readRootItems,
+  readMenuItems,
+  deleteMenuItem,
+  addMenuItem,
+  updateMenuItem,
+};
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -12,6 +18,16 @@ const readRootItems = async () => {
 const readMenuItems = async (id) => {
   const subMenuItems = await axios.get(`${API_URL}menu-items/${id}`);
   return subMenuItems.data;
+};
+
+const addMenuItem = async (menuItem) => {
+  const newMenuItem = await axios.post(`${API_URL}menu-items`, menuItem);
+  return newMenuItem.data;
+};
+
+const updateMenuItem = async (menuItem) => {
+  const updateItem = await axios.put(`${API_URL}menu-items`, menuItem);
+  return updateItem.data;
 };
 
 const deleteMenuItem = async ({ id, parentId }) => {
