@@ -13,8 +13,8 @@ const NavHeader = () => {
       <Menu onClickRootHandler={onClickRootHandler}>
         {navItems && (
           <>
-            {navItems.map((items, idx) => {
-              return <Navigation items={items} levelIdx={idx} />;
+            {navItems.map((levelItems, idx) => {
+              return <Navigation levelItems={levelItems} levelIdx={idx} />;
             })}
           </>
         )}

@@ -21,7 +21,7 @@ const getItems = (req, res, next) => {
       for (const item in parentItem.children) {
         childrens[item] = menuItems[item];
       }
-      res.send(childrens);
+      res.send({ parentId: id, childrens });
     }
   });
 };
@@ -42,7 +42,7 @@ const getRootItems = (req, res, next) => {
         for (const item in rootItem.children) {
           childrens[item] = menuItems[item];
         }
-        res.send(childrens);
+        res.send({ parentId: null, childrens });
       }
     }
   });
